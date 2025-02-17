@@ -4,7 +4,7 @@
 
 ## About Me
 
-- 🔭 I’m currently working on data science projects and machine learning models.
+- 🔭 I’m currently working on data science projects and machine learning models.  Projects will be updated periodically.
 - 🌱 I’m currently learning advanced data analytics and deep learning techniques.
 - 👯 I’m looking to collaborate on open source projects related to data science.
 - 💬 Ask me about Python, machine learning, and data visualization.
