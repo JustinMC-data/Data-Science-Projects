@@ -11,6 +11,7 @@
 - 📫 How to reach me: [jmcjac61607@gmail.com]
 - ⚡ Fun fact: I love hiking and exploring new places.
 - Continually adding various Data projects from coding to analysis
+- Check out nousforgesystems.com for one of my newest projects
 
 ## Skills
 
