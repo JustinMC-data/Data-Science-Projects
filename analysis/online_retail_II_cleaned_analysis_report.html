@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Analysis Report — Retail</title>
+    <style>
+        /* ── Reset & Base ── */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #F8FAFC; color: #1E293B; line-height: 1.6;
+            max-width: 1100px; margin: 0 auto; padding: 20px;
+        }
+
+        /* ── Header ── */
+        .header {
+            background: linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%);
+            color: white; padding: 40px; border-radius: 12px;
+            margin-bottom: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .header h1 { font-size: 28px; margin-bottom: 8px; }
+        .header .meta { opacity: 0.85; font-size: 14px; }
+
+        /* ── Sections ── */
+        .section {
+            background: white; border-radius: 10px; padding: 30px;
+            margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #E2E8F0;
+        }
+        .section h2 {
+            color: #1E3A5F; font-size: 20px; margin-bottom: 16px;
+            padding-bottom: 8px; border-bottom: 2px solid #2563EB;
+        }
+        .section p, .section .text {
+            color: #475569; font-size: 15px; white-space: pre-line;
+            margin-bottom: 16px;
+        }
+
+        /* ── Charts ── */
+        .chart { text-align: center; margin: 20px 0; }
+        .chart img {
+            max-width: 100%; height: auto; border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        /* ── Tables ── */
+        .table-container { overflow-x: auto; margin: 16px 0; }
+        .table-title { font-weight: 600; color: #1E3A5F; margin-bottom: 8px; }
+        table {
+            width: 100%; border-collapse: collapse; font-size: 14px;
+        }
+        th {
+            background: #1E3A5F; color: white; padding: 10px 14px;
+            text-align: left; font-weight: 600;
+        }
+        td { padding: 9px 14px; border-bottom: 1px solid #E2E8F0; }
+        tr:nth-child(even) { background: #F8FAFC; }
+        tr:hover { background: #EFF6FF; }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center; color: #94A3B8; font-size: 13px;
+            padding: 20px; margin-top: 20px;
+        }
+
+        /* ── Table of Contents ── */
+        .toc { padding: 20px 30px; }
+        .toc h2 { margin-bottom: 12px; }
+        .toc a {
+            display: block; color: #2563EB; text-decoration: none;
+            padding: 4px 0; font-size: 15px;
+        }
+        .toc a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Data Analysis Report</h1>
+        <div class="meta">
+            Domain: Retail &nbsp;|&nbsp;
+            File: online_retail_II_cleaned.xlsx &nbsp;|&nbsp;
+            Generated: 2026-03-05 14:21:50
+        </div>
+    </div>
+
+    <div class="section toc">
+        <h2>Table of Contents</h2>
+        <a href="#section-0">1. Dataset Overview</a>
+        <a href="#section-1">2. Descriptive Statistics</a>
+        <a href="#section-2">3. Categorical Value Analysis</a>
+        <a href="#section-3">4. Missing Data Analysis</a>
+        <a href="#section-4">5. Revenue Summary</a>
+        <a href="#section-5">6. Top Products by Order Count</a>
+        <a href="#section-6">7. Top Products by Quantity Sold</a>
+        <a href="#section-7">8. Top Products by Revenue</a>
+        <a href="#section-8">9. Top Regions by Revenue</a>
+        <a href="#section-9">10. Top Customers by Total Spend</a>
+        <a href="#section-10">11. Most Frequent Customers (by Orders)</a>
+        <a href="#section-11">12. Customer Purchase Frequency Distribution</a>
+    </div>
+
+    <div class="section" id="section-0">
+        <h2>Dataset Overview</h2>
+        <div class="text">The dataset contains 518,596 rows and 8 columns. Below is a summary of each column including its type, completeness, unique value count, and key statistics.</div>
+        <div class="table-container">
+            <div class="table-title">Column Summary</div>
+            <table>
+                <tr><th>Column</th><th>Type</th><th>Non-Null</th><th>Unique</th><th>Mean/Mode</th><th>Min</th><th>Max</th></tr>
+                <tr><td>invoice</td><td>numeric</td><td>508,411/518,596</td><td>24221</td><td>514470.28</td><td>489434.00</td><td>538171.00</td></tr>
+                <tr><td>stockcode</td><td>numeric</td><td>439,265/518,596</td><td>2957</td><td>29734.04</td><td>10002.00</td><td>90208.00</td></tr>
+                <tr><td>description</td><td>text</td><td>518,596/518,596</td><td>4640</td><td>WHITE HANGING HEART T-LIG</td><td>-</td><td>-</td></tr>
+                <tr><td>quantity</td><td>numeric</td><td>518,596/518,596</td><td>37</td><td>6.46</td><td>-12.50</td><td>23.50</td></tr>
+                <tr><td>invoicedate</td><td>datetime</td><td>518,596/518,596</td><td>25296</td><td>2009-12-01</td><td>2009-12-01</td><td>2010-12-09</td></tr>
+                <tr><td>price</td><td>numeric</td><td>518,596/518,596</td><td>383</td><td>3.07</td><td>-3.19</td><td>8.65</td></tr>
+                <tr><td>customer_id</td><td>numeric</td><td>518,596/518,596</td><td>4383</td><td>15344.76</td><td>12346.00</td><td>18287.00</td></tr>
+                <tr><td>country</td><td>text</td><td>518,596/518,596</td><td>40</td><td>United Kingdom</td><td>-</td><td>-</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="section" id="section-1">
+        <h2>Descriptive Statistics</h2>
+        <div class="text">Standard statistical measures for all numeric columns. Large differences between the mean and median (50%) indicate skewness. A high standard deviation relative to the mean suggests high variability.</div>
+        <div class="table-container">
+            <div class="table-title">Numeric Statistics</div>
+            <table>
+                <tr><th>Column</th><th>Count</th><th>Mean</th><th>Std Dev</th><th>Min</th><th>25%</th><th>Median</th><th>75%</th><th>Max</th></tr>
+                <tr><td>invoice</td><td>508,411</td><td>514,470.28</td><td>14,435.06</td><td>489,434.00</td><td>501,862.00</td><td>514,736.00</td><td>527,262.00</td><td>538,171.00</td></tr>
+                <tr><td>stockcode</td><td>439,265</td><td>29,734.04</td><td>19,831.68</td><td>10,002.00</td><td>21,524.00</td><td>22,155.00</td><td>22,629.00</td><td>90,208.00</td></tr>
+                <tr><td>quantity</td><td>518,596</td><td>6.46</td><td>7.35</td><td>-12.50</td><td>1.00</td><td>3.00</td><td>10.00</td><td>23.50</td></tr>
+                <tr><td>price</td><td>518,596</td><td>3.07</td><td>2.47</td><td>-3.19</td><td>1.25</td><td>2.10</td><td>4.21</td><td>8.65</td></tr>
+                <tr><td>customer_id</td><td>518,596</td><td>15,344.76</td><td>1,496.74</td><td>12,346.00</td><td>14,355.00</td><td>15,311.00</td><td>16,441.00</td><td>18,287.00</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="section" id="section-2">
+        <h2>Categorical Value Analysis</h2>
+        <div class="text">Distribution of values in categorical columns. Showing the top 10 most frequent values for each.</div>
+        <div class="table-container">
+            <div class="table-title">Top Values: country</div>
+            <table>
+                <tr><th>Value</th><th>Count</th><th>% of Total</th></tr>
+                <tr><td>United Kingdom</td><td>479,047</td><td>92.4%</td></tr>
+                <tr><td>EIRE</td><td>9,660</td><td>1.9%</td></tr>
+                <tr><td>Germany</td><td>8,120</td><td>1.6%</td></tr>
+                <tr><td>France</td><td>5,754</td><td>1.1%</td></tr>
+                <tr><td>Netherlands</td><td>2,768</td><td>0.5%</td></tr>
+                <tr><td>Spain</td><td>1,271</td><td>0.2%</td></tr>
+                <tr><td>Switzerland</td><td>1,187</td><td>0.2%</td></tr>
+                <tr><td>Portugal</td><td>1,098</td><td>0.2%</td></tr>
+                <tr><td>Belgium</td><td>1,053</td><td>0.2%</td></tr>
+                <tr><td>Channel Islands</td><td>906</td><td>0.2%</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="section" id="section-3">
+        <h2>Missing Data Analysis</h2>
+        <div class="text">Found 2 column(s) with missing values. Total cells missing: 89,516 out of 4,148,768 (2.2%).</div>
+        <div class="table-container">
+            <div class="table-title">Missing Values Summary</div>
+            <table>
+                <tr><th>Column</th><th>Missing Count</th><th>% Missing</th></tr>
+                <tr><td>stockcode</td><td>79,331</td><td>15.3%</td></tr>
+                <tr><td>invoice</td><td>10,185</td><td>2.0%</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="section" id="section-4">
+        <h2>Revenue Summary</h2>
+        <div class="text">Total Revenue: $6,927,818.97
+Average Line Item Revenue: $13.73
+Median Line Item Revenue: $8.65
+Total Line Items: 518,596
+Revenue Calculation: Calculated as 'quantity' × 'price'
+Total Units Sold: 3,412,386
+Average Unit Price: $3.10
+Gross Profit: $5,333,831.34
+Gross Margin: 77.0%
+Unique Invoices/Orders: 24,221
+Average Revenue per Order: $286.03
+Returns/Refunds: 10,184 items ($119,291.05)</div>
+    </div>
+
+    <div class="section" id="section-5">
+        <h2>Top Products by Order Count</h2>
+        <div class="text">The most frequently ordered products. 'WHITE HANGING HEART T-LIGHT HOLDER' appears in the most line items (3,409).</div>
+        <div class="table-container">
+            <div class="table-title">Most Ordered Products</div>
+            <table>
+                <tr><th>Product</th><th>Order Count</th><th>% of Orders</th></tr>
+                <tr><td>WHITE HANGING HEART T-LIGHT HOLDER</td><td>3,409</td><td>0.7%</td></tr>
+                <tr><td>REGENCY CAKESTAND 3 TIER</td><td>2,034</td><td>0.4%</td></tr>
+                <tr><td>STRAWBERRY CERAMIC TRINKET BOX</td><td>1,678</td><td>0.3%</td></tr>
+                <tr><td>PACK OF 72 RETRO SPOT CAKE CASES</td><td>1,435</td><td>0.3%</td></tr>
+                <tr><td>ASSORTED COLOUR BIRD ORNAMENT</td><td>1,435</td><td>0.3%</td></tr>
+                <tr><td>60 TEATIME FAIRY CAKE CASES</td><td>1,372</td><td>0.3%</td></tr>
+                <tr><td>HOME BUILDING BLOCK WORD</td><td>1,349</td><td>0.3%</td></tr>
+                <tr><td>JUMBO BAG RED RETROSPOT</td><td>1,270</td><td>0.3%</td></tr>
+                <tr><td>LUNCH BAG RED SPOTTY</td><td>1,231</td><td>0.2%</td></tr>
+                <tr><td>JUMBO STORAGE BAG SUKI</td><td>1,193</td><td>0.2%</td></tr>
+                <tr><td>PACK OF 60 PINK PAISLEY CAKE CASES</td><td>1,176</td><td>0.2%</td></tr>
+                <tr><td>WOODEN FRAME ANTIQUE WHITE</td><td>1,161</td><td>0.2%</td></tr>
+                <tr><td>LUNCH BAG BLACK SKULL.</td><td>1,139</td><td>0.2%</td></tr>
+                <tr><td>REX CASH+CARRY JUMBO SHOPPER</td><td>1,133</td><td>0.2%</td></tr>
+                <tr><td>LUNCH BAG SUKI DESIGN</td><td>1,131</td><td>0.2%</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="section" id="section-6">
+        <h2>Top Products by Quantity Sold</h2>
+        <div class="text">Products ranked by total units sold. 'WHITE HANGING HEART T-LIGHT HOLDER' has the highest volume with 34,012 units.</div>
+        <div class="table-container">
+            <div class="table-title">Top Products by Volume</div>
+            <table>
+                <tr><th>Product</th><th>Total Qty Sold</th></tr>
+                <tr><td>WHITE HANGING HEART T-LIGHT HOLDER</td><td>34,012</td></tr>
+                <tr><td>PACK OF 72 RETRO SPOT CAKE CASES</td><td>22,789</td></tr>
+                <tr><td>ASSORTED COLOUR BIRD ORNAMENT</td><td>20,380</td></tr>
+                <tr><td>60 TEATIME FAIRY CAKE CASES</td><td>19,107</td></tr>
+                <tr><td>STRAWBERRY CERAMIC TRINKET BOX</td><td>17,584</td></tr>
+                <tr><td>PACK OF 60 PINK PAISLEY CAKE CASES</td><td>15,908</td></tr>
+                <tr><td>JUMBO BAG RED RETROSPOT</td><td>13,241</td></tr>
+                <tr><td>LUNCH BAG RED SPOTTY</td><td>11,557</td></tr>
+                <tr><td>ANTIQUE SILVER TEA GLASS ETCHED</td><td>11,478</td></tr>
+                <tr><td>PACK OF 72 SKULL CAKE CASES</td><td>11,352</td></tr>
+                <tr><td>HANGING HEART ZINC T-LIGHT HOLDER</td><td>11,293</td></tr>
+                <tr><td>WORLD WAR 2 GLIDERS ASSTD DESIGNS</td><td>10,780</td></tr>
+                <tr><td>72 SWEETHEART FAIRY CAKE CASES</td><td>10,362</td></tr>
+                <tr><td>COLOUR GLASS T-LIGHT HOLDER HANGING</td><td>10,306</td></tr>
+                <tr><td>REGENCY CAKESTAND 3 TIER</td><td>10,145</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="section" id="section-7">
+        <h2>Top Products by Revenue</h2>
+        <div class="text">Top 15 products ranked by total revenue.</div>
+        <div class="table-container">
+            <div class="table-title">Top Products</div>
+            <table>
+                <tr><th>Product</th><th>Total Revenue</th><th>Line Items</th><th>Avg Revenue</th></tr>
+                <tr><td>WHITE HANGING HEART T-LIGHT HOLDER</td><td>$96,693.31</td><td>3,409</td><td>$28.36</td></tr>
+                <tr><td>REGENCY CAKESTAND 3 TIER</td><td>$87,753.89</td><td>2,034</td><td>$43.14</td></tr>
+                <tr><td>PARTY BUNTING</td><td>$35,769.93</td><td>1,030</td><td>$34.73</td></tr>
+                <tr><td>ASSORTED COLOUR BIRD ORNAMENT</td><td>$34,821.17</td><td>1,435</td><td>$24.27</td></tr>
+                <tr><td>HOME BUILDING BLOCK WORD</td><td>$29,922.41</td><td>1,349</td><td>$22.18</td></tr>
+                <tr><td>PAPER CHAIN KIT 50'S CHRISTMAS</td><td>$29,045.98</td><td>984</td><td>$29.52</td></tr>
+                <tr><td>VINTAGE UNION JACK BUNTING</td><td>$28,876.69</td><td>834</td><td>$34.62</td></tr>
+                <tr><td>JUMBO BAG RED RETROSPOT</td><td>$26,289.36</td><td>1,270</td><td>$20.70</td></tr>
+                <tr><td>HOT WATER BOTTLE TEA AND SYMPATHY</td><td>$25,692.39</td><td>1,030</td><td>$24.94</td></tr>
+                <tr><td>CHOCOLATE HOT WATER BOTTLE</td><td>$24,471.08</td><td>939</td><td>$26.06</td></tr>
+                <tr><td>SCOTTIE DOG HOT WATER BOTTLE</td><td>$24,319.75</td><td>1,022</td><td>$23.80</td></tr>
+                <tr><td>WOODEN FRAME ANTIQUE WHITE</td><td>$23,934.21</td><td>1,161</td><td>$20.62</td></tr>
+                <tr><td>STRAWBERRY CERAMIC TRINKET BOX</td><td>$23,526.76</td><td>1,678</td><td>$14.02</td></tr>
+                <tr><td>RED HANGING HEART T-LIGHT HOLDER</td><td>$22,562.91</td><td>1,087</td><td>$20.76</td></tr>
+                <tr><td>DOOR MAT UNION FLAG</td><td>$22,465.30</td><td>674</td><td>$33.33</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="section" id="section-8">
+        <h2>Top Regions by Revenue</h2>
+        <div class="text">Top 15 regions ranked by total revenue.</div>
+        <div class="table-container">
+            <div class="table-title">Top Regions</div>
+            <table>
+                <tr><th>Region</th><th>Total Revenue</th><th>Line Items</th><th>Avg Revenue</th></tr>
+                <tr><td>United Kingdom</td><td>$6,084,007.54</td><td>466,603</td><td>$13.04</td></tr>
+                <tr><td>EIRE</td><td>$221,718.73</td><td>9,450</td><td>$23.46</td></tr>
+                <tr><td>Germany</td><td>$163,576.36</td><td>7,645</td><td>$21.40</td></tr>
+                <tr><td>France</td><td>$104,780.65</td><td>5,514</td><td>$19.00</td></tr>
+                <tr><td>Netherlands</td><td>$82,238.26</td><td>2,728</td><td>$30.15</td></tr>
+                <tr><td>Switzerland</td><td>$31,413.60</td><td>1,170</td><td>$26.85</td></tr>
+                <tr><td>Spain</td><td>$24,241.25</td><td>1,228</td><td>$19.74</td></tr>
+                <tr><td>Sweden</td><td>$20,311.13</td><td>886</td><td>$22.92</td></tr>
+                <tr><td>Portugal</td><td>$20,008.76</td><td>1,058</td><td>$18.91</td></tr>
+                <tr><td>Belgium</td><td>$19,948.01</td><td>1,036</td><td>$19.25</td></tr>
+                <tr><td>Channel Islands</td><td>$17,336.38</td><td>821</td><td>$21.12</td></tr>
+                <tr><td>Australia</td><td>$17,138.40</td><td>630</td><td>$27.20</td></tr>
+                <tr><td>Greece</td><td>$12,700.24</td><td>512</td><td>$24.81</td></tr>
+                <tr><td>Italy</td><td>$12,406.62</td><td>708</td><td>$17.52</td></tr>
+                <tr><td>Denmark</td><td>$12,138.11</td><td>418</td><td>$29.04</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="section" id="section-9">
+        <h2>Top Customers by Total Spend</h2>
+        <div class="text">Top 15 customers out of 4,312 total.
+These 15 customers account for $1,541,543.19 (22.3% of total revenue).</div>
+        <div class="table-container">
+            <div class="table-title">Highest Spending Customers</div>
+            <table>
+                <tr><th>Customer</th><th>Total Spend</th></tr>
+                <tr><td>15311</td><td>$907,853.07</td></tr>
+                <tr><td>14911</td><td>$123,204.52</td></tr>
+                <tr><td>14156</td><td>$71,037.53</td></tr>
+                <tr><td>14646</td><td>$65,448.32</td></tr>
+                <tr><td>17850</td><td>$50,366.69</td></tr>
+                <tr><td>13089</td><td>$44,194.74</td></tr>
+                <tr><td>18102</td><td>$43,640.99</td></tr>
+                <tr><td>17511</td><td>$38,283.69</td></tr>
+                <tr><td>13694</td><td>$34,728.24</td></tr>
+                <tr><td>13093</td><td>$32,603.91</td></tr>
+                <tr><td>14298</td><td>$29,026.75</td></tr>
+                <tr><td>13081</td><td>$26,303.59</td></tr>
+                <tr><td>15061</td><td>$26,228.31</td></tr>
+                <tr><td>17841</td><td>$25,895.74</td></tr>
+                <tr><td>14680</td><td>$22,727.10</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="section" id="section-10">
+        <h2>Most Frequent Customers (by Orders)</h2>
+        <div class="text">Customers ranked by number of orders. Most active customer: '15311' with 1,859 orders.</div>
+        <div class="table-container">
+            <div class="table-title">Most Frequent Customers</div>
+            <table>
+                <tr><th>Customer</th><th>Orders</th></tr>
+                <tr><td>15311</td><td>1,859</td></tr>
+                <tr><td>14911</td><td>205</td></tr>
+                <tr><td>17850</td><td>155</td></tr>
+                <tr><td>12748</td><td>144</td></tr>
+                <tr><td>13089</td><td>109</td></tr>
+                <tr><td>14606</td><td>102</td></tr>
+                <tr><td>14156</td><td>102</td></tr>
+                <tr><td>13694</td><td>94</td></tr>
+                <tr><td>17841</td><td>91</td></tr>
+                <tr><td>18102</td><td>89</td></tr>
+                <tr><td>15061</td><td>86</td></tr>
+                <tr><td>14646</td><td>78</td></tr>
+                <tr><td>17949</td><td>74</td></tr>
+                <tr><td>14527</td><td>69</td></tr>
+                <tr><td>17961</td><td>62</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="section" id="section-11">
+        <h2>Customer Purchase Frequency Distribution</h2>
+        <div class="text">How often customers buy.
+Total unique customers: 4,312
+One-time buyers: 1,419 (32.9%)
+Repeat customers: 2,893 (67.1%)
+Average orders per customer: 4.9</div>
+        <div class="table-container">
+            <div class="table-title">Purchase Frequency Bands</div>
+            <table>
+                <tr><th># of Orders</th><th>Customers</th><th>% of Total</th></tr>
+                <tr><td>1</td><td>1,419</td><td>32.9%</td></tr>
+                <tr><td>2-3</td><td>1,335</td><td>31.0%</td></tr>
+                <tr><td>4-5</td><td>616</td><td>14.3%</td></tr>
+                <tr><td>6-10</td><td>607</td><td>14.1%</td></tr>
+                <tr><td>11-20</td><td>242</td><td>5.6%</td></tr>
+                <tr><td>21-50</td><td>75</td><td>1.7%</td></tr>
+                <tr><td>51+</td><td>18</td><td>0.4%</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="footer">
+        Generated by Data Analyzer Pro &nbsp;|&nbsp; 2026-03-05 14:21:50
+    </div>
+</body>
+</html>
