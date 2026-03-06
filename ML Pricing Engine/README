@@ -1,0 +1,201 @@
+# 🎯 Smart Pricing Engine
+
+[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red.svg)](https://streamlit.io/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+**ML-Powered Demand Forecasting & Price Optimization**
+
+An end-to-end machine learning application that predicts product demand at different price points and identifies revenue-maximizing prices through price elasticity analysis.
+
+![App Screenshot](screenshots/price_optimizer.png)
+<!-- Add screenshots folder with images of your app -->
+
+---
+
+## 🚀 Features
+
+- **Demand Prediction** — ML models predict weekly product demand based on price and contextual features
+- **Price Elasticity Analysis** — Calculate how sensitive each product's demand is to price changes
+- **Revenue Optimization** — Identify the price point that maximizes revenue
+- **Interactive Dashboard** — Explore data, compare models, and simulate pricing scenarios
+- **Real-Time Predictions** — Adjust price slider and instantly see predicted demand
+
+---
+
+## 📊 Results
+
+| Model | RMSE | MAE | R² |
+|-------|------|-----|-----|
+| Baseline (Mean) | 149.56 | 68.63 | -0.003 |
+| **Linear Regression** | **120.69** | 50.94 | **0.347** |
+| Random Forest | 122.75 | 49.54 | 0.324 |
+| XGBoost | 130.12 | 47.12 | 0.241 |
+
+**Key Findings:**
+- All ML models significantly outperformed baseline
+- 43 of 50 products analyzed showed >5% revenue uplift potential
+- Average potential revenue uplift: 258%
+
+---
+
+## 🛠️ Tech Stack
+
+- **Python 3.9+**
+- **pandas** — Data manipulation
+- **scikit-learn** — Machine learning models
+- **XGBoost** — Gradient boosting
+- **Streamlit** — Web application
+- **Plotly** — Interactive visualizations
+
+---
+
+## 📁 Project Structure
+
+```
+smart_pricing_engine/
+├── app/
+│   └── app.py                  # Streamlit web application
+├── src/
+│   ├── data_loader.py          # Data loading & cleaning
+│   ├── feature_engineering.py  # Feature creation (28 features)
+│   ├── model_training.py       # Model training & evaluation
+│   └── elasticity.py           # Price elasticity calculations
+├── notebooks/
+│   └── complete_workflow.py    # End-to-end ML pipeline
+├── data/
+│   ├── raw/                    # Original dataset (download separately)
+│   └── processed/              # Processed data files
+├── models/                     # Trained model files
+├── requirements.txt
+├── LICENSE
+└── README.md
+```
+
+---
+
+## ⚡ Quick Start
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/JustinMC-data/smart-pricing-engine.git
+cd smart-pricing-engine
+```
+
+### 2. Create Virtual Environment (Recommended)
+
+```bash
+python -m venv venv
+source venv/bin/activate        # Mac/Linux
+venv\Scripts\activate           # Windows
+```
+
+### 3. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Download the Dataset
+
+Download the **Online Retail II** dataset from UCI:
+- 🔗 [Download Dataset](https://archive.ics.uci.edu/dataset/502/online+retail+ii)
+- Place the Excel file in `data/raw/`
+
+### 5. Run the ML Pipeline
+
+```bash
+python notebooks/complete_workflow.py
+```
+
+This will:
+- Clean and process the data
+- Engineer 28 features
+- Train all models
+- Generate elasticity analysis
+- Save models and processed data
+
+### 6. Launch the Application
+
+```bash
+cd app
+streamlit run app.py
+```
+
+Open your browser to `http://localhost:8501`
+
+---
+
+## 📸 Screenshots
+
+### Home Page
+![Home](screenshots/home.png)
+
+### Price Optimizer
+![Price Optimizer](screenshots/price_optimizer.png)
+
+### Model Performance
+![Model Performance](screenshots/model_performance.png)
+
+<!-- Create a screenshots/ folder and add these images -->
+
+---
+
+## 🔬 Methodology
+
+### Data Pipeline
+1. **Raw Data**: 1,067,371 transactions from UCI Online Retail II
+2. **Cleaning**: Removed cancellations, missing IDs, invalid prices → 779,425 records (73% retained)
+3. **Aggregation**: Transaction-level → Weekly product-level → 154,987 observations
+
+### Feature Engineering (28 Features)
+- **Temporal**: Month, WeekOfYear, Quarter, IsHolidaySeason
+- **Price Context**: PriceRelativeToAvg, PriceRelativeToMin, PriceRelativeToMax
+- **Lag Features**: Lag1/2/4 for Quantity, Price, Revenue
+- **Rolling Features**: 4-week and 8-week moving averages
+- **Product Features**: AvgWeeklyQty, Volatility, WeeksActive
+
+### Models
+- Baseline (Mean Prediction)
+- Linear Regression
+- Random Forest
+- XGBoost
+
+### Price Elasticity
+- Simulate demand at prices from 50% to 150% of current
+- Calculate elasticity: % change in quantity / % change in price
+- Find revenue-maximizing price point
+
+---
+
+## 📈 Future Improvements
+
+- [ ] Add file upload for custom datasets
+- [ ] Auto-detect column mapping
+- [ ] Train models on user data
+- [ ] Add confidence intervals to predictions
+- [ ] Deploy to Streamlit Cloud
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👤 Author
+
+**Justin Conroy**
+
+- GitHub: [@JustinMC-data](https://github.com/JustinMC-data)
+- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
+- Website: [NousForge Systems](https://nousforgesystems.com)
+
+---
+
+## 🙏 Acknowledgments
+
+- [UCI Machine Learning Repository](https://archive.ics.uci.edu/) for the Online Retail II dataset
+- Eastern University MSDS Program
