@@ -11,6 +11,41 @@ An end-to-end machine learning application that predicts product demand at diffe
 ![App Screenshot](screenshots/price_optimizer.png)
 <!-- Add screenshots folder with images of your app -->
 
+💼 Business Impact
+The Problem
+
+Retailers lose revenue through suboptimal pricing decisions.
+If prices are set too high, sales volume declines. If prices are too low, profit margins are left on the table. Managing optimal prices across thousands of products is difficult to do manually and often leads to inconsistent pricing strategies.
+
+The Solution
+
+This machine learning pricing engine analyzes transactional retail data to estimate demand sensitivity and identify potential pricing opportunities.
+
+Using the Online Retail II dataset (1M+ transactions), the model identified:
+
+Metric	Result
+Products analyzed	50
+Products with pricing opportunities	86%
+Average simulated revenue uplift	+258%
+Highest single-product opportunity	+781%
+
+These estimates are generated through demand simulation using an XGBoost demand model combined with price elasticity analysis.
+
+Real Example
+
+A decorative retail item priced at £1.25 was identified as having inelastic demand.
+Simulation suggested that increasing the price to £1.88 would have minimal impact on demand while significantly increasing revenue per unit.
+
+Business Interpretation
+
+This type of analysis enables retailers to:
+
+• Identify products with underpriced demand
+• Adjust pricing based on demand sensitivity
+• Improve revenue without increasing marketing spend
+
+By systematically applying this approach across an entire product catalog, retailers can move from static pricing strategies to data-driven price optimization.
+
 ---
 
 ## 🚀 Features
