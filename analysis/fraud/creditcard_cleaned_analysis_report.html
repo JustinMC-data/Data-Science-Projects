@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Analysis Report — Fraud</title>
+    <style>
+        /* ── Reset & Base ── */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #F8FAFC; color: #1E293B; line-height: 1.6;
+            max-width: 1100px; margin: 0 auto; padding: 20px;
+        }
+
+        /* ── Header ── */
+        .header {
+            background: linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%);
+            color: white; padding: 40px; border-radius: 12px;
+            margin-bottom: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .header h1 { font-size: 28px; margin-bottom: 8px; }
+        .header .meta { opacity: 0.85; font-size: 14px; }
+
+        /* ── Sections ── */
+        .section {
+            background: white; border-radius: 10px; padding: 30px;
+            margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #E2E8F0;
+        }
+        .section h2 {
+            color: #1E3A5F; font-size: 20px; margin-bottom: 16px;
+            padding-bottom: 8px; border-bottom: 2px solid #2563EB;
+        }
+        .section p, .section .text {
+            color: #475569; font-size: 15px; white-space: pre-line;
+            margin-bottom: 16px;
+        }
+
+        /* ── Charts ── */
+        .chart { text-align: center; margin: 20px 0; }
+        .chart img {
+            max-width: 100%; height: auto; border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        /* ── Tables ── */
+        .table-container { overflow-x: auto; margin: 16px 0; }
+        .table-title { font-weight: 600; color: #1E3A5F; margin-bottom: 8px; }
+        table {
+            width: 100%; border-collapse: collapse; font-size: 14px;
+        }
+        th {
+            background: #1E3A5F; color: white; padding: 10px 14px;
+            text-align: left; font-weight: 600;
+        }
+        td { padding: 9px 14px; border-bottom: 1px solid #E2E8F0; }
+        tr:nth-child(even) { background: #F8FAFC; }
+        tr:hover { background: #EFF6FF; }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center; color: #94A3B8; font-size: 13px;
+            padding: 20px; margin-top: 20px;
+        }
+
+        /* ── Table of Contents ── */
+        .toc { padding: 20px 30px; }
+        .toc h2 { margin-bottom: 12px; }
+        .toc a {
+            display: block; color: #2563EB; text-decoration: none;
+            padding: 4px 0; font-size: 15px;
+        }
+        .toc a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Data Analysis Report</h1>
+        <div class="meta">
+            Domain: Fraud &nbsp;|&nbsp;
+            File: creditcard_cleaned.csv &nbsp;|&nbsp;
+            Generated: 2026-03-17 09:38:53
+        </div>
+    </div>
+
+    <div class="section toc">
+        <h2>Table of Contents</h2>
+        <a href="#section-0">1. Dataset Overview</a>
+        <a href="#section-1">2. Descriptive Statistics</a>
+        <a href="#section-2">3. Class Distribution & Imbalance Analysis</a>
+        <a href="#section-3">4. Transaction Amount: Fraud vs Legitimate</a>
+        <a href="#section-4">5. Feature Correlation with Target</a>
+        <a href="#section-5">6. Modeling Recommendations</a>
+    </div>
+
+    <div class="section" style="border-left: 4px solid #059669;">
+        <h2>Executive Summary</h2>
+        <div class="text">Analysis of 283,726 records across 31 variables. Key findings include 2 notable insights. 1 actionable recommendations generated.</div>
+        <h3 style="color:#1E3A5F;margin-top:15px">Key Findings</h3>
+        <div class="text">
+            • Minority class: 1 (0.17%)<br>
+            • Severely imbalanced dataset. Recommendations:<br>
+        </div>
+        <h3 style="color:#059669;margin-top:15px">Recommendations</h3>
+        <div class="text" style="background:#F0FDF4;padding:15px;border-radius:8px">
+            → Run the ML Classifier tool on this data with the fraud flag as the target. The SHAP analysis will identify which transaction features are most predictive of fraud.<br><br>
+        </div>
+    </div>
+
+    <div class="section" id="section-0">
+        <h2>Dataset Overview</h2>
+        <div class="text">The dataset contains 283,726 rows and 31 columns. Below is a summary of each column including its type, completeness, unique value count, and key statistics.</div>
+        <div class="table-container">
+            <div class="table-title">Column Summary</div>
+            <table>
+                <tr><th>Column</th><th>Type</th><th>Non-Null</th><th>Unique</th><th>Mean/Mode</th><th>Min</th><th>Max</th></tr>
+                <tr><td>time</td><td>numeric</td><td>283,726/283,726</td><td>124592</td><td>94811.08</td><td>0.00</td><td>172792.00</td></tr>
+                <tr><td>v1</td><td>numeric</td><td>283,726/283,726</td><td>268777</td><td>0.08</td><td>-4.27</td><td>2.45</td></tr>
+                <tr><td>v2</td><td>numeric</td><td>283,726/283,726</td><td>262352</td><td>0.05</td><td>-2.70</td><td>2.91</td></tr>
+                <tr><td>v3</td><td>numeric</td><td>283,726/283,726</td><td>272461</td><td>0.03</td><td>-3.77</td><td>3.90</td></tr>
+                <tr><td>v4</td><td>numeric</td><td>283,726/283,726</td><td>264711</td><td>-0.03</td><td>-3.24</td><td>3.13</td></tr>
+                <tr><td>v5</td><td>numeric</td><td>283,726/283,726</td><td>264102</td><td>-0.00</td><td>-2.65</td><td>2.57</td></tr>
+                <tr><td>v6</td><td>numeric</td><td>283,726/283,726</td><td>254880</td><td>-0.09</td><td>-2.52</td><td>2.15</td></tr>
+                <tr><td>v7</td><td>numeric</td><td>283,726/283,726</td><td>266882</td><td>0.01</td><td>-2.24</td><td>2.26</td></tr>
+                <tr><td>v8</td><td>numeric</td><td>283,726/283,726</td><td>252051</td><td>0.07</td><td>-1.01</td><td>1.13</td></tr>
+                <tr><td>v9</td><td>numeric</td><td>283,726/283,726</td><td>267654</td><td>-0.02</td><td>-2.50</td><td>2.46</td></tr>
+                <tr><td>v10</td><td>numeric</td><td>283,726/283,726</td><td>266330</td><td>-0.03</td><td>-2.02</td><td>1.94</td></tr>
+                <tr><td>v11</td><td>numeric</td><td>283,726/283,726</td><td>274993</td><td>-0.00</td><td>-3.02</td><td>2.99</td></tr>
+                <tr><td>v12</td><td>numeric</td><td>283,726/283,726</td><td>260750</td><td>0.04</td><td>-1.94</td><td>2.15</td></tr>
+                <tr><td>v13</td><td>numeric</td><td>283,726/283,726</td><td>272328</td><td>-0.00</td><td>-2.62</td><td>2.63</td></tr>
+                <tr><td>v14</td><td>numeric</td><td>283,726/283,726</td><td>262243</td><td>0.02</td><td>-1.80</td><td>1.87</td></tr>
+                <tr><td>v15</td><td>numeric</td><td>283,726/283,726</td><td>272802</td><td>0.00</td><td>-2.43</td><td>2.50</td></tr>
+                <tr><td>v16</td><td>numeric</td><td>283,726/283,726</td><td>267565</td><td>0.01</td><td>-1.96</td><td>2.01</td></tr>
+                <tr><td>v17</td><td>numeric</td><td>283,726/283,726</td><td>268725</td><td>-0.00</td><td>-1.81</td><td>1.72</td></tr>
+                <tr><td>v18</td><td>numeric</td><td>283,726/283,726</td><td>268257</td><td>0.01</td><td>-2.00</td><td>2.00</td></tr>
+                <tr><td>v19</td><td>numeric</td><td>283,726/283,726</td><td>265636</td><td>-0.00</td><td>-1.83</td><td>1.83</td></tr>
+                <tr><td>v20</td><td>numeric</td><td>283,726/283,726</td><td>248183</td><td>-0.03</td><td>-0.73</td><td>0.65</td></tr>
+                <tr><td>v21</td><td>numeric</td><td>283,726/283,726</td><td>261296</td><td>-0.02</td><td>-0.85</td><td>0.81</td></tr>
+                <tr><td>v22</td><td>numeric</td><td>283,726/283,726</td><td>274366</td><td>0.00</td><td>-2.15</td><td>2.13</td></tr>
+                <tr><td>v23</td><td>numeric</td><td>283,726/283,726</td><td>257240</td><td>-0.00</td><td>-0.63</td><td>0.61</td></tr>
+                <tr><td>v24</td><td>numeric</td><td>283,726/283,726</td><td>271017</td><td>0.00</td><td>-1.55</td><td>1.63</td></tr>
+                <tr><td>v25</td><td>numeric</td><td>283,726/283,726</td><td>270322</td><td>0.00</td><td>-1.32</td><td>1.35</td></tr>
+                <tr><td>v26</td><td>numeric</td><td>283,726/283,726</td><td>270113</td><td>-0.00</td><td>-1.18</td><td>1.09</td></tr>
+                <tr><td>v27</td><td>numeric</td><td>283,726/283,726</td><td>236927</td><td>0.01</td><td>-0.31</td><td>0.33</td></tr>
+                <tr><td>v28</td><td>numeric</td><td>283,726/283,726</td><td>245680</td><td>0.01</td><td>-0.25</td><td>0.28</td></tr>
+                <tr><td>amount</td><td>numeric</td><td>283,726/283,726</td><td>15794</td><td>51.80</td><td>0.00</td><td>184.51</td></tr>
+                <tr><td>class</td><td>numeric</td><td>283,726/283,726</td><td>2</td><td>0.00</td><td>0.00</td><td>1.00</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="section" id="section-1">
+        <h2>Descriptive Statistics</h2>
+        <div class="text">Standard statistical measures for all numeric columns. Large differences between the mean and median (50%) indicate skewness. A high standard deviation relative to the mean suggests high variability.</div>
+        <div class="table-container">
+            <div class="table-title">Numeric Statistics</div>
+            <table>
+                <tr><th>Column</th><th>Count</th><th>Mean</th><th>Std Dev</th><th>Min</th><th>25%</th><th>Median</th><th>75%</th><th>Max</th></tr>
+                <tr><td>time</td><td>283,726</td><td>94,811.08</td><td>47,481.05</td><td>0.00</td><td>54,204.75</td><td>84,692.50</td><td>139,298.00</td><td>172,792.00</td></tr>
+                <tr><td>v1</td><td>283,726</td><td>0.08</td><td>1.59</td><td>-4.27</td><td>-0.92</td><td>0.02</td><td>1.32</td><td>2.45</td></tr>
+                <tr><td>v2</td><td>283,726</td><td>0.05</td><td>1.12</td><td>-2.70</td><td>-0.60</td><td>0.06</td><td>0.80</td><td>2.91</td></tr>
+                <tr><td>v3</td><td>283,726</td><td>0.03</td><td>1.37</td><td>-3.77</td><td>-0.89</td><td>0.18</td><td>1.03</td><td>3.90</td></tr>
+                <tr><td>v4</td><td>283,726</td><td>-0.03</td><td>1.31</td><td>-3.24</td><td>-0.85</td><td>-0.02</td><td>0.74</td><td>3.13</td></tr>
+                <tr><td>v5</td><td>283,726</td><td>-0.00</td><td>1.08</td><td>-2.65</td><td>-0.69</td><td>-0.05</td><td>0.61</td><td>2.57</td></tr>
+                <tr><td>v6</td><td>283,726</td><td>-0.09</td><td>1.00</td><td>-2.52</td><td>-0.77</td><td>-0.28</td><td>0.40</td><td>2.15</td></tr>
+                <tr><td>v7</td><td>283,726</td><td>0.01</td><td>0.86</td><td>-2.24</td><td>-0.55</td><td>0.04</td><td>0.57</td><td>2.26</td></tr>
+                <tr><td>v8</td><td>283,726</td><td>0.07</td><td>0.48</td><td>-1.01</td><td>-0.21</td><td>0.02</td><td>0.33</td><td>1.13</td></tr>
+                <tr><td>v9</td><td>283,726</td><td>-0.02</td><td>1.02</td><td>-2.50</td><td>-0.64</td><td>-0.05</td><td>0.60</td><td>2.46</td></tr>
+                <tr><td>v10</td><td>283,726</td><td>-0.03</td><td>0.82</td><td>-2.02</td><td>-0.54</td><td>-0.09</td><td>0.45</td><td>1.94</td></tr>
+                <tr><td>v11</td><td>283,726</td><td>-0.00</td><td>1.00</td><td>-3.02</td><td>-0.76</td><td>-0.03</td><td>0.74</td><td>2.99</td></tr>
+                <tr><td>v12</td><td>283,726</td><td>0.04</td><td>0.84</td><td>-1.94</td><td>-0.41</td><td>0.14</td><td>0.62</td><td>2.15</td></tr>
+                <tr><td>v13</td><td>283,726</td><td>-0.00</td><td>0.98</td><td>-2.62</td><td>-0.65</td><td>-0.01</td><td>0.66</td><td>2.63</td></tr>
+                <tr><td>v14</td><td>283,726</td><td>0.02</td><td>0.78</td><td>-1.80</td><td>-0.43</td><td>0.05</td><td>0.49</td><td>1.87</td></tr>
+                <tr><td>v15</td><td>283,726</td><td>0.00</td><td>0.90</td><td>-2.43</td><td>-0.58</td><td>0.05</td><td>0.65</td><td>2.50</td></tr>
+                <tr><td>v16</td><td>283,726</td><td>0.01</td><td>0.81</td><td>-1.96</td><td>-0.47</td><td>0.07</td><td>0.52</td><td>2.01</td></tr>
+                <tr><td>v17</td><td>283,726</td><td>-0.00</td><td>0.67</td><td>-1.81</td><td>-0.48</td><td>-0.07</td><td>0.40</td><td>1.72</td></tr>
+                <tr><td>v18</td><td>283,726</td><td>0.01</td><td>0.80</td><td>-2.00</td><td>-0.50</td><td>-0.00</td><td>0.50</td><td>2.00</td></tr>
+                <tr><td>v19</td><td>283,726</td><td>-0.00</td><td>0.76</td><td>-1.83</td><td>-0.46</td><td>0.00</td><td>0.46</td><td>1.83</td></tr>
+                <tr><td>v20</td><td>283,726</td><td>-0.03</td><td>0.32</td><td>-0.73</td><td>-0.21</td><td>-0.06</td><td>0.13</td><td>0.65</td></tr>
+                <tr><td>v21</td><td>283,726</td><td>-0.02</td><td>0.32</td><td>-0.85</td><td>-0.23</td><td>-0.03</td><td>0.19</td><td>0.81</td></tr>
+                <tr><td>v22</td><td>283,726</td><td>0.00</td><td>0.71</td><td>-2.15</td><td>-0.54</td><td>0.01</td><td>0.53</td><td>2.13</td></tr>
+                <tr><td>v23</td><td>283,726</td><td>-0.00</td><td>0.27</td><td>-0.63</td><td>-0.16</td><td>-0.01</td><td>0.15</td><td>0.61</td></tr>
+                <tr><td>v24</td><td>283,726</td><td>0.00</td><td>0.59</td><td>-1.55</td><td>-0.35</td><td>0.04</td><td>0.44</td><td>1.63</td></tr>
+                <tr><td>v25</td><td>283,726</td><td>0.00</td><td>0.49</td><td>-1.32</td><td>-0.32</td><td>0.02</td><td>0.35</td><td>1.35</td></tr>
+                <tr><td>v26</td><td>283,726</td><td>-0.00</td><td>0.47</td><td>-1.18</td><td>-0.33</td><td>-0.05</td><td>0.24</td><td>1.09</td></tr>
+                <tr><td>v27</td><td>283,726</td><td>0.01</td><td>0.16</td><td>-0.31</td><td>-0.07</td><td>0.00</td><td>0.09</td><td>0.33</td></tr>
+                <tr><td>v28</td><td>283,726</td><td>0.01</td><td>0.12</td><td>-0.25</td><td>-0.05</td><td>0.01</td><td>0.08</td><td>0.28</td></tr>
+                <tr><td>amount</td><td>283,726</td><td>51.80</td><td>61.71</td><td>0.00</td><td>5.60</td><td>22.00</td><td>77.51</td><td>184.51</td></tr>
+                <tr><td>class</td><td>283,726</td><td>0.00</td><td>0.04</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>1.00</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="section" id="section-2">
+        <h2>Class Distribution & Imbalance Analysis</h2>
+        <div class="text">Total records: 283,726
+Class distribution:
+  Class 0: 283,253 (99.83%)
+  Class 1: 473 (0.17%)
+
+Minority class: 1 (0.17%)
+Imbalance ratio: 599:1
+
+Severely imbalanced dataset. Recommendations:
+  - Use SMOTE or other oversampling techniques
+  - Evaluate with Precision-Recall AUC, not ROC AUC
+  - F1-score and Matthews Correlation Coefficient (MCC)
+  - Stratified cross-validation is essential</div>
+        <div class="table-container">
+            <div class="table-title">Class Counts</div>
+            <table>
+                <tr><th>Class</th><th>Count</th><th>Percentage</th></tr>
+                <tr><td>0</td><td>283,253</td><td>99.83%</td></tr>
+                <tr><td>1</td><td>473</td><td>0.17%</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="section" id="section-3">
+        <h2>Transaction Amount: Fraud vs Legitimate</h2>
+        <div class="text">Statistical comparison of amounts between classes.</div>
+        <div class="table-container">
+            <div class="table-title">Amount Statistics by Class</div>
+            <table>
+                <tr><th>Class</th><th>Count</th><th>Mean</th><th>Median</th><th>Std Dev</th><th>Min</th><th>Max</th></tr>
+                <tr><td>Fraud/Positive</td><td>473</td><td>$58.80</td><td>$9.82</td><td>$72.49</td><td>$0.00</td><td>$184.51</td></tr>
+                <tr><td>Legitimate/Negative</td><td>283,253</td><td>$51.78</td><td>$22.00</td><td>$61.69</td><td>$0.00</td><td>$184.51</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="section" id="section-4">
+        <h2>Feature Correlation with Target</h2>
+        <div class="text">Features ranked by absolute correlation with the target. Higher absolute values suggest stronger predictive power. Note: correlation captures LINEAR relationships only — tree-based models may find non-linear patterns too.</div>
+        <div class="table-container">
+            <div class="table-title">Top Feature Correlations</div>
+            <table>
+                <tr><th>Feature</th><th>Correlation</th><th>|Correlation|</th></tr>
+                <tr><td>v11</td><td>0.0939</td><td>0.0939</td></tr>
+                <tr><td>v3</td><td>-0.0864</td><td>0.0864</td></tr>
+                <tr><td>v14</td><td>-0.0846</td><td>0.0846</td></tr>
+                <tr><td>v12</td><td>-0.0817</td><td>0.0817</td></tr>
+                <tr><td>v4</td><td>0.0814</td><td>0.0814</td></tr>
+                <tr><td>v10</td><td>-0.0806</td><td>0.0806</td></tr>
+                <tr><td>v7</td><td>-0.0690</td><td>0.0690</td></tr>
+                <tr><td>v16</td><td>-0.0683</td><td>0.0683</td></tr>
+                <tr><td>v17</td><td>-0.0678</td><td>0.0678</td></tr>
+                <tr><td>v2</td><td>0.0655</td><td>0.0655</td></tr>
+                <tr><td>v9</td><td>-0.0623</td><td>0.0623</td></tr>
+                <tr><td>v1</td><td>-0.0555</td><td>0.0555</td></tr>
+                <tr><td>v18</td><td>-0.0466</td><td>0.0466</td></tr>
+                <tr><td>v21</td><td>0.0463</td><td>0.0463</td></tr>
+                <tr><td>v6</td><td>-0.0460</td><td>0.0460</td></tr>
+                <tr><td>v5</td><td>-0.0386</td><td>0.0386</td></tr>
+                <tr><td>v27</td><td>0.0319</td><td>0.0319</td></tr>
+                <tr><td>v8</td><td>0.0274</td><td>0.0274</td></tr>
+                <tr><td>v19</td><td>0.0266</td><td>0.0266</td></tr>
+                <tr><td>v20</td><td>0.0261</td><td>0.0261</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="section" id="section-5">
+        <h2>Modeling Recommendations</h2>
+        <div class="text">Recommended Modeling Approach:
+
+Dataset size: 283,726 rows × 31 numeric features
+
+Class imbalance handling:
+  - SMOTE oversampling or ADASYN (scikit-learn-compatible)
+  - Cost-sensitive learning (class_weight='balanced')
+  - Anomaly detection approach (Isolation Forest, One-Class SVM)
+
+Recommended evaluation metrics:
+  - Precision-Recall AUC (better than ROC AUC for imbalanced data)
+  - F1-Score (harmonic mean of precision and recall)
+  - Matthews Correlation Coefficient (MCC)
+  - Confusion matrix with true/false positive rates
+
+Suggested algorithms:
+  - XGBoost or LightGBM (handles imbalance well)
+  - Random Forest with class weighting
+  - Logistic Regression (strong baseline)
+  - Consider dimensionality reduction if features > 50
+
+Model explainability:
+  - SHAP values for feature importance
+  - Partial dependence plots for top features</div>
+    </div>
+
+    <div class="footer">
+        Generated by Data Analyzer Pro &nbsp;|&nbsp; 2026-03-17 09:38:53
+    </div>
+</body>
+</html>
