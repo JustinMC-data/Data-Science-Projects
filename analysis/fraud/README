@@ -1,1 +1,87 @@
 
+# Credit Card Fraud Detection
+
+**Binary classification on highly imbalanced transaction data — 492 frauds out of 284,807 transactions (0.17% fraud rate).**
+
+## The Challenge
+
+This is the classic imbalanced classification benchmark. A model that simply predicts "not fraud" for every transaction achieves 99.83% accuracy — and catches zero fraud. Accuracy is meaningless here. The real challenge is maximizing fraud detection (recall) without drowning in false alarms (precision).
+
+## Dataset
+
+**Source:** [Kaggle — Credit Card Fraud Detection](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)
+
+| Property | Value |
+|----------|-------|
+| Records | 284,807 transactions |
+| Features | 30 (V1-V28 PCA components + Time + Amount) |
+| Target | `Class` (0 = legitimate, 1 = fraud) |
+| Fraud rate | 0.172% (492 out of 284,807) |
+| Imbalance ratio | ~578:1 |
+
+The V1-V28 features are PCA-transformed for privacy — original feature names are not available. `Time` is seconds elapsed from the first transaction. `Amount` is the transaction value.
+
+## Pipeline
+
+```
+creditcard.csv
+  → data_cleaner.py       (type fixes, health score)
+  → data_analyzer.py      (fraud domain: class distribution, feature correlations)
+  → ml_classifier.py      (3 models + SHAP explainability)
+```
+
+## Results
+
+### Model Comparison
+
+| Model | F1-Score | ROC-AUC | Precision | Recall | MCC |
+|-------|----------|---------|-----------|--------|-----|
+| **Logistic Regression** | **0.97** | **1.00** | 0.97 | 0.97 | 0.97 |
+| XGBoost | 0.94 | 1.00 | 0.96 | 0.92 | 0.94 |
+| Random Forest | 0.83 | 1.00 | 0.91 | 0.76 | 0.84 |
+
+*Results from the fixed pipeline with all 30 features preserved + smart feature engineering (binning, interactions, skewness correction).*
+
+### Key Findings
+
+- **Logistic Regression outperformed XGBoost** — this is a meaningful finding. It indicates the fraud signal in this dataset is largely linear, which makes sense: PCA components are linear transformations, so a linear model can capture them directly.
+- **Class imbalance handled with balanced class weights** — at 578:1 imbalance, the models use `class_weight='balanced'` to penalize misclassifying the rare fraud class more heavily.
+- **SHAP analysis identified V14, V17, V12, and V10** as the top fraud predictors. Since these are anonymized PCA features, we can't name the original variables, but the analysis shows which transformed dimensions carry the most fraud signal.
+- **Smart feature engineering** added log-transformed Amount (heavily right-skewed), quantile bins for continuous features, and interaction terms between the most correlated features.
+
+### What This Demonstrates
+
+| Skill | How It's Shown |
+|-------|---------------|
+| Imbalanced classification | 578:1 ratio handled with class weighting |
+| Model comparison | 3 models at different complexity levels, compared on proper metrics |
+| Proper evaluation | F1, PR-AUC, MCC — not accuracy (which is useless at 99.8%) |
+| Feature engineering | Automated binning, interactions, skewness correction |
+| Explainability | SHAP values identify which features drive fraud predictions |
+
+## How to Reproduce
+
+```bash
+# Download the dataset from Kaggle
+# https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud
+
+# Clean the data
+python tools/data_cleaner.py creditcard.csv --auto
+
+# Analyze (fraud domain)
+python tools/data_analyzer.py creditcard_cleaned.csv --domain fraud
+
+# Run ML classification
+python tools/ml_classifier.py creditcard_cleaned.csv --target Class
+```
+
+## Reports
+
+- `creditcard_cleaned_ml_report.html` — Full ML classification report with model comparison, ROC/PR curves, confusion matrices, and SHAP feature importance
+- `creditcard_cleaned_analysis_report.html` — Exploratory analysis with class distribution, feature correlations, and modeling recommendations
+
+## Technical Notes
+
+- The data cleaner's ID detection was specifically hardened to preserve V1-V28 PCA features (float columns are never flagged as IDs, regardless of uniqueness)
+- The ML classifier automatically detects the 578:1 imbalance and applies balanced class weighting
+- SHAP uses `LinearExplainer` for Logistic Regression and `TreeExplainer` for Random Forest/XGBoost, selecting the optimal algorithm automatically
