@@ -1,1 +1,122 @@
 
+# Telco Customer Churn Prediction
+
+**Predicting which customers will leave a telecom provider — using real, interpretable features that drive actionable business decisions.**
+
+## Why This Project Matters
+
+Customer churn is the #1 revenue problem in subscription businesses. Acquiring a new customer costs 5-7x more than retaining an existing one. If you can identify customers likely to churn BEFORE they leave, you can intervene with targeted retention offers — and the model tells you exactly WHY they're leaving.
+
+This project demonstrates that capability end-to-end.
+
+## Dataset
+
+**Source:** [Kaggle — Telco Customer Churn (IBM)](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)
+
+| Property | Value |
+|----------|-------|
+| Records | 7,043 customers |
+| Features | 20 (demographics, services, account info) |
+| Target | `Churn` (Yes / No) |
+| Churn rate | 26.5% (1,869 out of 7,043) |
+| Imbalance ratio | 2.7:1 |
+
+### Feature Categories
+
+| Category | Features |
+|----------|----------|
+| **Demographics** | Gender, SeniorCitizen, Partner, Dependents |
+| **Services** | PhoneService, MultipleLines, InternetService, OnlineSecurity, OnlineBackup, DeviceProtection, TechSupport, StreamingTV, StreamingMovies |
+| **Account** | Contract, PaperlessBilling, PaymentMethod, MonthlyCharges, TotalCharges, Tenure |
+
+Unlike the fraud dataset (anonymous PCA features), every feature here has a clear business meaning. This makes the SHAP analysis directly actionable.
+
+## Pipeline
+
+```
+WA_Fn-UseC_-Telco-Customer-Churn.csv
+  → data_cleaner.py       (type fixes, missing value handling, health score)
+  → ml_classifier.py      (3 models + SHAP explainability)
+```
+
+## Results
+
+### Model Comparison
+
+| Model | F1-Score | ROC-AUC | Precision | Recall | MCC |
+|-------|----------|---------|-----------|--------|-----|
+| **Logistic Regression** | **0.604** | **0.842** | 0.657 | 0.559 | 0.479 |
+| Random Forest | 0.576 | 0.836 | 0.652 | 0.516 | 0.452 |
+| XGBoost | 0.567 | 0.829 | 0.609 | 0.529 | 0.426 |
+
+### Why These Numbers Are Good (Not Great — and That's the Point)
+
+An F1 of 0.60 on churn prediction is **realistic and honest**. Most published Kaggle solutions on this dataset land between 0.55-0.65. Here's why:
+
+- Churn is a **human decision** — it's inherently harder to predict than fraud (which has clear numerical patterns)
+- The features are relatively simple — no transaction history, no usage logs, no customer service call records
+- A model that catches 56% of churners while only flagging 34% false positives is **commercially viable** — it means your retention team focuses on customers who are genuinely at risk
+
+Inflating these numbers to 0.95+ would indicate overfitting or data leakage, not a better model.
+
+### Key Findings (from SHAP Analysis)
+
+The SHAP feature importance reveals the actual **business drivers of churn**:
+
+1. **Contract type** is the strongest predictor — month-to-month customers churn at dramatically higher rates than those on 1-year or 2-year contracts
+2. **Tenure** matters — new customers (< 12 months) are highest risk
+3. **Monthly charges** — higher-paying customers churn more, suggesting perceived value issues
+4. **Internet service type** — Fiber optic customers churn more than DSL (possibly due to higher cost or competition)
+5. **Tech support and online security** — customers WITHOUT these services churn more
+
+### Business Recommendations
+
+Based on the model's findings:
+
+| Finding | Recommended Action |
+|---------|-------------------|
+| Month-to-month contracts churn most | Offer incentives to convert to annual contracts (discount months 13-24) |
+| New customers are highest risk | Implement a 90-day onboarding program with check-ins at days 7, 30, 60 |
+| High monthly charges correlate with churn | Audit pricing vs perceived value; consider loyalty discounts at month 6 |
+| Customers without tech support churn more | Bundle tech support into base plans or offer free trial periods |
+
+This is what separates a data science project from a consulting deliverable — **the model tells you what to DO, not just what happened.**
+
+## How to Reproduce
+
+```bash
+# Download the dataset from Kaggle
+# https://www.kaggle.com/datasets/blastchar/telco-customer-churn
+
+# Clean the data
+python tools/data_cleaner.py WA_Fn-UseC_-Telco-Customer-Churn.csv --auto
+
+# Run ML classification
+python tools/ml_classifier.py WA_Fn-UseC_-Telco-Customer-Churn_cleaned.csv --target Churn
+```
+
+## Reports
+
+- `WA_Fn-UseC_-Telco-Customer-Churn_cleaned_ml_report.html` — Full ML classification report with model comparison, ROC/PR curves, confusion matrices, SHAP feature importance, and per-class performance
+- Feature engineering log showing all 15 categorical columns encoded, 4 numeric features scaled, plus smart engineering (bins, interactions)
+
+## Technical Notes
+
+- Target column `Churn` (Yes/No) is automatically encoded to binary (0/1)
+- `TotalCharges` contains missing values disguised as empty strings — the cleaner detects and handles these
+- Class imbalance (2.7:1) is handled with `class_weight='balanced'` across all models
+- 15 categorical features are one-hot encoded (all have ≤4 categories)
+- Smart feature engineering adds tenure bins, charge interactions, and skewness-corrected features
+- SHAP uses `LinearExplainer` for Logistic Regression since it's the winning model — this is faster and exact compared to `KernelExplainer`
+
+## What This Project Demonstrates vs the Fraud Project
+
+| Dimension | Fraud Detection | Churn Prediction |
+|-----------|----------------|-----------------|
+| Features | Anonymous (V1-V28 PCA) | Named, business-readable |
+| Imbalance | Extreme (578:1) | Moderate (2.7:1) |
+| Best model | Logistic Regression | Logistic Regression |
+| SHAP value | Shows which PCA components matter | Shows which business factors drive churn |
+| Actionability | "V14 is important" (technical) | "Month-to-month contracts drive churn" (actionable) |
+
+Having both projects shows range — you can handle both extreme imbalance with anonymous features AND moderate imbalance with interpretable business features.
