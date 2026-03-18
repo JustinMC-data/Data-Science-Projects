@@ -80,20 +80,7 @@ Based on the model's findings:
 | High monthly charges correlate with churn | Audit pricing vs perceived value; consider loyalty discounts at month 6 |
 | Customers without tech support churn more | Bundle tech support into base plans or offer free trial periods |
 
-This is what separates a data science project from a consulting deliverable — **the model tells you what to DO, not just what happened.**
 
-## How to Reproduce
-
-```bash
-# Download the dataset from Kaggle
-# https://www.kaggle.com/datasets/blastchar/telco-customer-churn
-
-# Clean the data
-python tools/data_cleaner.py WA_Fn-UseC_-Telco-Customer-Churn.csv --auto
-
-# Run ML classification
-python tools/ml_classifier.py WA_Fn-UseC_-Telco-Customer-Churn_cleaned.csv --target Churn
-```
 
 ## Reports
 
@@ -119,4 +106,4 @@ python tools/ml_classifier.py WA_Fn-UseC_-Telco-Customer-Churn_cleaned.csv --tar
 | SHAP value | Shows which PCA components matter | Shows which business factors drive churn |
 | Actionability | "V14 is important" (technical) | "Month-to-month contracts drive churn" (actionable) |
 
-Having both projects shows range — you can handle both extreme imbalance with anonymous features AND moderate imbalance with interpretable business features.
+
