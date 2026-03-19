@@ -1,0 +1,79 @@
+Data Science & Analytics Services
+I help businesses turn messy data into clear decisions. Whether it's understanding your customers, predicting churn, detecting fraud, or forecasting demand — I deliver professional analysis reports with plain-English findings and specific recommendations you can act on.
+
+What I Deliver
+You send me your data. I send you back professional reports that answer your business questions.
+ServiceWhat You GetTypical TurnaroundData Quality AuditHealth score (0-100), issue breakdown, cleaned dataset ready for analysisSame dayBusiness AnalysisExecutive summary, charts, trends, and recommendations tailored to your industry1-2 daysRevenue ForecastingProjections with confidence intervals, seasonal pattern identification, accuracy metrics1-2 daysCustomer SegmentationRFM-scored customer groups with specific retention strategies per segment1-2 daysPredictive ModelingML classification (fraud, churn, risk) with explainability showing WHY the model predicts what it does2-3 days
+Every report includes an executive summary written in business language — not data science jargon. Your team can read it, understand it, and act on it without needing a technical background.
+
+Industries I Work With
+IndustryExample Questions I AnswerRetail / E-CommerceWhich customers are about to stop buying? Where should we focus marketing spend? What will demand look like next quarter?Finance / AccountingWhere is money flowing? Which expense categories are growing fastest? How does actual performance compare to budget?Healthcare / ClinicalWhat are the most common diagnoses? How does mortality vary by unit? Which patient populations drive the highest costs?Fraud / RiskCan we predict fraudulent transactions? Which features are the strongest indicators? What's the false alarm rate?HR / WorkforceHow is compensation distributed across departments? Where are the retention risks? How does performance rating break down?Public SafetyHow are crime trends changing year over year? Which offense types are growing? Where should resources be allocated?
+
+Sample Work
+Retail Customer Intelligence — Online Retail II (518K transactions)
+A UK-based online retailer needed to understand their customer base and identify revenue risks.
+What I delivered:
+
+Segmented 4,312 customers into 11 behavioral groups using RFM analysis
+Identified that 6.7% of customers drive 50% of revenue — extreme concentration risk
+Flagged 530 customers as churn risks, representing significant historical revenue
+Forecasted weekly demand with seasonal modeling to support inventory planning
+Provided specific recommendations per segment (loyalty programs for Champions, win-back campaigns for At Risk customers)
+
+Fraud Detection — Credit Card Transactions (284K transactions)
+A financial services team needed to identify fraudulent transactions in a dataset with a 0.17% fraud rate — 492 frauds hidden in 284,807 legitimate transactions.
+What I delivered:
+
+Built and compared 3 ML models, achieving 97%+ detection on the minority class
+Identified the top predictive features driving fraud risk using SHAP explainability
+Provided evaluation focused on precision and recall (not accuracy, which is meaningless at 99.8% class imbalance)
+Documented the full modeling pipeline for reproducibility
+
+Churn Prediction — Telco Customer Data (7,043 customers)
+A telecom provider wanted to predict which customers would leave and understand the key drivers of churn.
+What I delivered:
+
+Predictive model identifying at-risk customers with 84% discriminative ability (ROC-AUC)
+SHAP analysis revealing that contract type, tenure, and monthly charges are the top churn drivers
+Specific business recommendations: incentivize annual contracts, implement 90-day onboarding, audit pricing for high-charge customers
+Honest assessment of model limitations with transparent methodology
+
+
+How It Works
+Step 1: You share your data with me (CSV, Excel, JSON, or database export). Any format works.
+Step 2: I run it through my analysis pipeline, reviewing the results and adding context specific to your business situation.
+Step 3: You receive professional HTML reports you can open in any browser — self-contained, no software needed. Each report includes an executive summary, visualizations with plain-English explanations, and actionable recommendations.
+Step 4: Optional follow-up call to walk through findings and discuss next steps.
+
+My Toolkit
+I built a proprietary analysis platform (10,700+ lines of Python) that automates the technical heavy lifting — data cleaning, statistical analysis, forecasting, segmentation, and machine learning. This means I can deliver thorough analysis on fast timelines at competitive rates.
+The platform includes:
+
+Automated data cleaning with a 0-100 health score that grades data quality before and after
+Domain-aware analysis that adapts to your industry (retail, finance, healthcare, HR, crime, fraud)
+5 forecasting methods compared automatically (Linear, Moving Average, Holt-Winters, ARIMA, Prophet)
+Customer segmentation with RFM scoring, Pareto analysis, and churn risk quantification
+ML classification with 3 models compared, proper imbalance handling, and SHAP explainability
+Executive summaries with auto-generated business insights in every report
+
+Every chart includes a written explanation of what it shows and what it means for your business. No unexplained numbers. No jargon without context.
+
+Technical Background
+For teams that want the technical details:
+
+Languages: Python (pandas, numpy, scikit-learn, statsmodels, XGBoost, SHAP, matplotlib)
+Specializations: Exploratory analysis, time series forecasting, customer analytics (RFM), binary classification, model explainability
+Data handling: Automated type detection, missing value imputation, outlier treatment, feature engineering (binning, interactions, skewness correction)
+Evaluation: F1-Score, ROC-AUC, PR-AUC, MCC, MAPE, cross-validation — using the right metric for each problem type
+Code quality: 10,700+ lines, thoroughly documented with decision-level comments explaining WHY every algorithm choice was made
+
+
+Get In Touch
+If you have data and questions, I can help. Reach out to discuss your project:
+
+Email: [jcbiz32822@gmail.com]
+LinkedIn: [https://www.linkedin.com/in/justin-conroy-495ba0258/]
+
+I offer free 15-minute consultations to scope projects and discuss whether I can help.
+
+This repository contains sample reports, case studies, and the technical documentation behind my analysis platform. All client data is handled under NDA with strict confidentiality.
