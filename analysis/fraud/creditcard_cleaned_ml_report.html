@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ML Classification Report — class</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',-apple-system,sans-serif;background:#F8FAFC;color:#1E293B;line-height:1.6;max-width:1100px;margin:0 auto;padding:20px}
+.header{background:linear-gradient(135deg,#1E3A5F 0%,#DC2626 100%);color:white;padding:40px;border-radius:12px;margin-bottom:30px;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
+.header h1{font-size:28px;margin-bottom:8px}.header .meta{opacity:0.85;font-size:14px}
+.section{background:white;border-radius:10px;padding:30px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,0.06);border:1px solid #E2E8F0}
+.section h2{color:#1E3A5F;font-size:20px;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid #DC2626}
+.text{color:#475569;font-size:15px;white-space:pre-line;margin-bottom:16px}
+.chart{text-align:center;margin:20px 0}.chart img{max-width:100%;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{background:#1E3A5F;color:white;padding:10px 14px;text-align:left;font-weight:600}
+td{padding:9px 14px;border-bottom:1px solid #E2E8F0}tr:nth-child(even){background:#F8FAFC}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:20px 0}
+.kpi{background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:20px;text-align:center}
+.kpi .value{font-size:22px;font-weight:700;color:#1E3A5F}.kpi .label{font-size:12px;color:#64748B;margin-top:4px}
+.best{background:#ECFDF5;font-weight:600}
+.footer{text-align:center;color:#94A3B8;font-size:13px;padding:20px;margin-top:20px}
+</style></head><body>
+<div class="header">
+<h1>ML Classification Report</h1>
+<div class="meta">Target: class &nbsp;|&nbsp; Best Model: XGBoost &nbsp;|&nbsp;
+File: creditcard_cleaned.csv &nbsp;|&nbsp; Generated: 2026-03-23 14:03:51</div>
+</div>
+
+<div class="section"><h2>Best Model: XGBoost</h2>
+<div class="kpi-grid">
+<div class="kpi"><div class="value">0.8671</div><div class="label">F1-Score</div></div>
+<div class="kpi"><div class="value">0.9685</div><div class="label">ROC-AUC</div></div>
+<div class="kpi"><div class="value">0.9615</div><div class="label">Precision</div></div>
+<div class="kpi"><div class="value">0.7895</div><div class="label">Recall</div></div>
+<div class="kpi"><div class="value">0.8711</div><div class="label">MCC</div></div>
+<div class="kpi"><div class="value">0.9996</div><div class="label">Accuracy</div></div>
+<div class="kpi"><div class="value">599.5:1</div><div class="label">Class Imbalance</div></div>
+<div class="kpi"><div class="value">class_weight</div><div class="label">Balance Method</div></div>
+</div>
+</div>
+<div class="section"><h2>Model Comparison</h2>
+<table><tr><th>Model</th><th>F1</th><th>ROC-AUC</th><th>PR-AUC</th><th>Precision</th><th>Recall</th><th>MCC</th><th>CV F1</th></tr>
+<tr class="best"><td>XGBoost ★</td><td>0.8671</td><td>0.9685</td><td>0.8162</td><td>0.9615</td><td>0.7895</td><td>0.8711</td><td>0.8587±0.031</td></tr>
+<tr><td>Random Forest</td><td>0.7931</td><td>0.9250</td><td>0.7913</td><td>0.8734</td><td>0.7263</td><td>0.7962</td><td>0.8182±0.039</td></tr>
+<tr><td>Logistic Regression</td><td>0.0835</td><td>0.9638</td><td>0.7600</td><td>0.0439</td><td>0.8632</td><td>0.1906</td><td>0.0910±0.004</td></tr>
+</table></div>
+<div class="section"><h2>Detailed Classification Report (XGBoost)</h2>
+<table><tr><th>Class</th><th>Precision</th><th>Recall</th><th>F1-Score</th><th>Support</th></tr>
+<tr><td>Class 0</td><td>0.9996</td><td>0.9999</td><td>0.9998</td><td>56,651</td></tr>
+<tr><td>Class 1</td><td>0.9615</td><td>0.7895</td><td>0.8671</td><td>95</td></tr>
+</table></div>
+<div class="section"><h2>Feature Engineering Log</h2>
+<div class="text">Numeric binning: 8 features discretized into quintiles
+Interactions: 6 pairwise products of top features
+Fraud features: 6 (z-score, log, percentile, temporal, PCA magnitude)
+Scaled 50 numeric features (StandardScaler)</div></div>
+<div class="section" style="border-left:4px solid #D97706">
+<h2>Threshold Optimization</h2>
+<div class="text">The default classification threshold is 0.50 — if the model assigns a probability above 50%, it flags the case as positive. But this threshold can be adjusted. Lowering it catches more true positives (higher recall) at the cost of more false alarms (lower precision).
+
+<b>Default threshold (0.50):</b> Recall = 78.9%, Precision = 96.2%
+<b>Optimal threshold (0.5):</b> Recall = 78.9%, Precision = 96.2%
+
+</div></div>
+<div class="section" style="border-left:4px solid #2563EB">
+<h2>Model Performance Insights</h2>
+<div class="text">• Logistic Regression essentially failed — it achieved high recall (86.3%) by flagging nearly everything as positive, resulting in extremely low precision (4.4%). This means it generates too many false alarms to be useful. This typically happens when a linear model can't capture the non-linear patterns in the data. Tree-based models (Random Forest, XGBoost) are needed here.
+
+• XGBoost catches 78.9% of actual positive cases. The remaining 21.1% are missed (false negatives). In contexts where missing a positive is costly (fraud, churn), consider lowering the classification threshold to increase recall at the expense of more false alarms.
+
+</div></div>
+<div class="footer">Generated by ML Classifier Pro | 2026-03-23 14:03:51</div></body></html>
