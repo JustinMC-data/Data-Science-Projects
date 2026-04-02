@@ -63,7 +63,7 @@ My work spans the full data science lifecycle — from raw messy data to deploye
 - 🎯 Completing SOA Exam FM (Financial Mathematics) — June 2026
 - 🚀 Launching Smart Pricing Engine commercially via NousForge Systems
 - 📈 Expanding Data Science Projects repo with new industry case studies
-- 🏢 Building INDAP Inc. — independent data analytics consulting
+
 
 ---
 
